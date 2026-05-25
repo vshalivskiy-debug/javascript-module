@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 1</title>
+</head>
+<body>
+
+<h2>Завдання 2 — summarizeNumbers</h2>
+
+<script>
+// Завдання 2 – обробка товарів
+function processProducts(products) {
+
+    // Масив товарів у наявності
+    const available = products
+        .filter(product => product.inStock === true)
+        .map(product => product.name);
+
+    // Сума цін товарів у наявності
+    const totalPrice = products
+        .filter(product => product.inStock === true)
+        .reduce((sum, product) => sum + product.price, 0);
+
+    // Пошук найдешевшого товару
+    const availableProducts = products.filter(product => product.inStock === true);
+
+    let cheapest = undefined;
+
+    if (availableProducts.length > 0) {
+
+        let minProduct = availableProducts[0];
+
+        for (let i = 1; i < availableProducts.length; i++) {
+
+            if (availableProducts[i].price < minProduct.price) {
+                minProduct = availableProducts[i];
+            }
+        }
+
+        cheapest = minProduct.name;
+    }
+
+    // Формування списку цін
+    const priceList = products.map(product =>
+        `${product.name} — ${product.price} грн`
+    );
+
+    // Повернення результату
+    return {
+        available: available,
+        totalPrice: totalPrice,
+        cheapest: cheapest,
+        priceList: priceList
+    };
+}
+
+// Тестові дані
+const products = [
+    { name: "Чай", price: 50, inStock: true },
+    { name: "Кава", price: 120, inStock: false },
+    { name: "Цукор", price: 30, inStock: true }
+];
+
+// Перевірка роботи
+console.log(processProducts(products));
+</script>
+
+</body>
+</html>

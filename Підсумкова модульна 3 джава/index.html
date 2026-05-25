@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 1</title>
+</head>
+<body>
+
+<h2>Завдання 3 — summarizeNumbers</h2>
+
+<script>
+// Завдання 3 – API клієнт із замиканням
+function createApiClient(baseUrl) {
+
+    // Приватний лічильник запитів
+    let requestCount = 0;
+
+    return {
+
+        // Асинхронний GET-запит
+        async get(path) {
+            requestCount++;
+
+            try {
+                const response = await fetch(baseUrl + path);
+
+                if (!response.ok) {
+                    throw new Error("Помилка запиту");
+                }
+
+                const data = await response.json();
+                return data;
+
+            } catch (error) {
+                return {
+                    error: "Запит не вдався"
+                };
+            }
+        },
+
+        // Метод для отримання кількості запитів
+        getRequestCount() {
+            return requestCount;
+        }
+    };
+}
+
+// Перевірка роботи
+const api = createApiClient("https://jsonplaceholder.typicode.com");
+
+async function testApi() {
+    const user = await api.get("/users/1");
+    console.log(user);
+
+    const posts = await api.get("/posts");
+    console.log(posts);
+
+    console.log("Кількість запитів:", api.getRequestCount());
+}
+
+testApi();
+</script>
+
+</body>
+</html>
